@@ -4,14 +4,11 @@
 #ifdef USE_OPENBLAS
 // #error "OPENBLAS"
 #include "cpustats.hpp"
+#endif
 
-#elif defined(USE_CUBLAS)
+#ifdef USE_CUBLAS
 // #error "CUBLAS"
 #include "gpustats.hpp"
-
-#else
-#error "Please define either USE_OPENBLAS or USE_CUBLAS"
-
 #endif
 
 #endif
