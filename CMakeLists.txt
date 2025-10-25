@@ -78,3 +78,6 @@ install(FILES
 add_executable(test_program test.cpp)
 target_link_libraries(test_program PRIVATE statlib)
 target_compile_options(test_program PRIVATE -Wall -Wextra -Wuninitialized)
+
+enable_testing() # enabling ctest - 'make test'
+add_subdirectory(tests) # include test dir
