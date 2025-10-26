@@ -6,9 +6,13 @@ EXECUTABLE := $(BUILD_DIR)/statlib
 all: test
 
 test:
-	@clear
-	@mkdir -p $(BUILD_DIR)
-	@cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && $(MAKE) -j && make test ARGS="--output-on-failure"
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && $(MAKE) -j && make test ARGS="--output-on-failure"
+
+run:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && $(MAKE) -j
+	./build/test_program
 
 install:
 	@mkdir -p $(BUILD_DIR)
