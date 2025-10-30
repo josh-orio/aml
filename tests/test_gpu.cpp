@@ -1,4 +1,3 @@
-#include "include/gpustats.hpp"
 #include "include/statlib.hpp"
 #include <gtest/gtest.h>
 

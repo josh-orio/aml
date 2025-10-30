@@ -1,10 +1,6 @@
-#include <cblas.h>
 #ifdef USE_OPENBLAS
 
 #include "cpustats.hpp"
-#include <algorithm>
-#include <random>
-#include <vector>
 
 namespace mathlib {
 namespace cpu {

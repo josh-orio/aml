@@ -45,18 +45,19 @@ TEST(library, Cpu_Tensor_Scale) {
 
 TEST(library, Cpu_Tensor_Update) {
   std::array a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f};
-  EXPECT_EQ(mathlib::cpu::tensor::mean(a.data(), a.size()), 2.0f);
+  std::array b = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f};
+  std::array updated_a = {0.0f, 2.0f, 4.0f, 6.0f, 8.0f};
+  mathlib::cpu::tensor::update(a.data(), b.data(), 1.0f, a.size());
 
-  std::array b = {-1.0f, 0.0f, 1.0f};
-  EXPECT_EQ(mathlib::cpu::tensor::mean(b.data(), b.size()), 0.0f);
+  EXPECT_EQ(a, updated_a);
 }
 
 TEST(library, Cpu_Tensor_Fixedupdate) {
   std::array a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f};
-  EXPECT_EQ(mathlib::cpu::tensor::mean(a.data(), a.size()), 2.0f);
+  std::array updated_a = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+  mathlib::cpu::tensor::fixed_update(a.data(), 1.0f, a.size());
 
-  std::array b = {-1.0f, 0.0f, 1.0f};
-  EXPECT_EQ(mathlib::cpu::tensor::mean(b.data(), b.size()), 0.0f);
+  EXPECT_EQ(a, updated_a);
 }
 
 TEST(library, Cpu_Tensor_Sum) {
