@@ -49,11 +49,6 @@ template <typename T> void swap(T *a, T *b, size_t n) {
 template void swap(float *a, float *b, size_t n);
 template void swap(double *a, double *b, size_t n);
 
-//   template <> void copy(float *src, float *dst, size_t n) { cblas_scopy(n, src, 1, dst, 1); }
-// template <> void copy(double *src, double *dst, size_t n) { cblas_dcopy(n, src, 1, dst, 1); }
-// template <> void swap(float *a, float *b, size_t n) { cblas_sswap(n, a, 1, b, 1); }
-// template <> void swap(double *a, double *b, size_t n) { cblas_dswap(n, a, 1, b, 1); } switch to cublas or cuda call
-
 // --- load: copy host data to GPU memory
 template <typename T> T *load(const T *hostData, size_t count) {
   T *deviceData = nullptr;

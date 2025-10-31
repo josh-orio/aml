@@ -5,7 +5,6 @@
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
-#include <iostream>
 #include <thrust/device_vector.h>
 #include <thrust/extrema.h>
 #include <thrust/transform.h>
@@ -21,6 +20,9 @@ template <typename T> void swap(T *a, T *b, size_t n);
 template <typename T> T *load(const T *hostData, size_t count);                     // load: copy host data to GPU memory
 template <typename T> void offload(const T *deviceData, T *hostData, size_t count); // offload: copy gpu data back to host memory
 template <typename T> void clear(T *deviceData);                                    // clear: free gpu memory
+
+template <typename T> void copy(const T *src, T *dst, size_t n);
+template <typename T> void swap(T *a, T *b, size_t n);
 
 } // namespace memory
 

@@ -1,4 +1,3 @@
-#include "include/cpustats.hpp"
 #include "include/statlib.hpp"
 #include <array>
 #include <iostream>
@@ -6,19 +5,20 @@
 #include <vector>
 
 int main() {
-  // std::array a = {0.f,1.f,2.f,3.f,4.f};
-  // float mean_a = mathlib::cpu::tensor::mean(a.data(), a.size());
+  std::array a = {0.f, 1.f, 2.f, 3.f, 4.f};
+  float mean_a = mathlib::cpu::tensor::mean(a.data(), a.size());
 
-  const size_t m = 16, n = 16, k = 256;
+  size_t m = 8192, n = 8192, k = 48192;
 
-  std::array<std::array<float, k>, m> a;
-  std::array<std::array<float, n>, k> b;
-  std::array<std::array<float, n>, m> c;
+  structs::Matrix<float> mfa(m, k, 1.0f);
+  structs::Matrix<float> mfb(k, n, 1.0f);
+  structs::Matrix<float> mfc(m, n, 0.0f);
 
-  mathlib::cpu::random::uniform(a.data()->data(), k * m, 0.f, 1.f);
-  mathlib::cpu::random::uniform(b.data()->data(), n * k, 0.f, 1.f);
-
-  mathlib::cpu::linalg::matmul(a.data()->data(), b.data()->data(), c.data()->data(), m, n, k);
+  auto start = std::chrono::high_resolution_clock::now();
+  mathlib::cpu::linalg::matmul(mfa.start(), mfb.start(), mfc.start(), m, n, k);
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = end - start;
+  std::cout << "matmul took " << elapsed.count() << " seconds.\n";
 
   return 0;
 }
