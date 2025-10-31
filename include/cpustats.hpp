@@ -1,7 +1,6 @@
 #ifndef CPUSTATS_HPP
 #define CPUSTATS_HPP
 
-#include <algorithm>
 #include <cblas.h>
 #include <cstddef>
 #include <random>
