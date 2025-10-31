@@ -153,9 +153,7 @@ template <typename T> void fixed_update(T *a, T alpha, size_t n) {
   cublasCreate(&handle);
 
   T one = static_cast<T>(1);
-  T *d_one;
-  cudaMalloc(&d_one, sizeof(T));
-  cudaMemcpy(d_one, &one, sizeof(T), cudaMemcpyHostToDevice);
+  T *d_one = memory::load(&one, 1);
 
   if constexpr (std::is_same_v<T, float>) {
     cublasSaxpy(handle, n, &alpha, d_one, 0, a, 1);
@@ -164,7 +162,7 @@ template <typename T> void fixed_update(T *a, T alpha, size_t n) {
     cublasDaxpy(handle, n, &alpha, d_one, 0, a, 1);
   }
 
-  cudaFree(d_one);
+  memory::clear(d_one);
   cublasDestroy(handle);
 }
 
@@ -180,29 +178,24 @@ template <typename T> T sum(const T *ptr, size_t n) {
   cublasCreate(&handle);
 
   T one = static_cast<T>(1);
-  T *d_one;
-  cudaMalloc(&d_one, sizeof(T));
-  cudaMemcpy(d_one, &one, sizeof(T), cudaMemcpyHostToDevice);
+  T *d_one = memory::load(&one, 1);
+
+  T result(0);
+  T *d_res = memory::load(&result, 1);
 
   if constexpr (std::is_same_v<T, float>) {
-    auto len = static_cast<int>(n);
-    T result;
-
-    cublasSdot(handle, len, ptr, 1, d_one, 0, &result);
-
-    return result;
+    cublasSdot(handle, n, ptr, 1, d_one, 0, d_res);
 
   } else if constexpr (std::is_same_v<T, double>) {
-    auto len = static_cast<int>(n);
-    T result;
-
-    cublasDdot(handle, len, ptr, 1, d_one, 0, &result);
-
-    return result;
+    cublasDdot(handle, n, ptr, 1, d_one, 0, d_res);
   }
 
+  memory::offload(d_res, &result, 1);
   cudaFree(d_one);
+  cudaFree(d_res);
   cublasDestroy(handle);
+
+  return result;
 }
 
 template float sum(const float *, std::size_t);
@@ -255,18 +248,21 @@ template <typename T> T dot(const T *a, const T *b, size_t n) {
   cublasHandle_t handle;
   cublasCreate(&handle);
 
+  T result(0);
+  T *d_res = memory::load(&result, 1);
+
   if constexpr (std::is_same_v<T, float>) {
-    T dot;
-    cublasSdot(handle, n, a, 1, b, 1, &dot);
-    return dot;
+    cublasSdot(handle, n, a, 1, b, 1, d_res);
 
   } else if constexpr (std::is_same_v<T, double>) {
-    T dot;
-    cublasDdot(handle, n, a, 1, b, 1, &dot);
-    return dot;
+    cublasDdot(handle, n, a, 1, b, 1, d_res);
   }
 
+  memory::offload(d_res, &result, 1);
+  cudaFree(d_res);
   cublasDestroy(handle);
+
+  return result;
 }
 
 template float dot(const float *a, const float *b, size_t n);
