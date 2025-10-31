@@ -1,5 +1,4 @@
 BUILD_DIR := build
-EXECUTABLE := $(BUILD_DIR)/statlib
 
 .PHONY: all install
 
@@ -7,11 +6,15 @@ all: test
 
 test:
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && $(MAKE) -j && make test ARGS="--output-on-failure"
+	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_BENCHES=OFF .. && $(MAKE) -j && make test ARGS="--output-on-failure"
+
+bench:
+	mkdir -p $(BUILD_DIR)
+	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_BENCHES=ON .. && cmake --build . --config Release && ./benches/bench_example
 
 run:
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && $(MAKE) -j
+	cd $(BUILD_DIR) && cmake -D CMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_BENCHES=OFF .. && $(MAKE) -j
 	./build/example_program
 
 install:

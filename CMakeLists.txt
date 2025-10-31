@@ -81,3 +81,8 @@ target_compile_options(example_program PRIVATE -Wall -Wextra -Wuninitialized)
 
 enable_testing() # enabling ctest - 'make test'
 add_subdirectory(tests) # include test dir
+
+option(BUILD_BENCHES "Build benchmark targets" OFF) # cmake -DBUILD_BENCHES=ON/OFF ..
+if(BUILD_BENCHES)
+    add_subdirectory(benches)
+endif()
