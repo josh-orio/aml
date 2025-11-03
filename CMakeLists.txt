@@ -9,7 +9,11 @@ file(GLOB library_INCLUDE "include/*.hpp")
 # message("library includes: ${library_INCLUDE}")
 
 add_library(statlib ${library_SOURCES})
-target_include_directories(statlib PRIVATE include)
+target_include_directories(statlib
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 target_compile_options(statlib PRIVATE -Wall -Wextra -Wuninitialized -Wno-sign-compare)
 
 # cuBLAS detection & linking to library

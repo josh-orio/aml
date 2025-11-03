@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <random>
 #include <vector>
+#include <algorithm>
 
 namespace mathlib {
 namespace cpu {
