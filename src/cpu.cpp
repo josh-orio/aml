@@ -1,8 +1,8 @@
 #ifdef USE_OPENBLAS
 
-#include "cpustats.hpp"
+#include <cpu.hpp>
 
-namespace mathlib {
+namespace aml {
 namespace cpu {
 
 const float one_f = 1;
@@ -301,6 +301,6 @@ template void normal(double *data, size_t n, double mean, double stdev);
 } // namespace random
 
 } // namespace cpu
-} // namespace mathlib
+} // namespace aml
 
 #endif

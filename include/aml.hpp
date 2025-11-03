@@ -1,16 +1,17 @@
-#ifndef STATLIB_HPP
-#define STATLIB_HPP
-
-#ifdef USE_OPENBLAS
-#include "cpustats.hpp"
-#endif
-
-#ifdef USE_CUBLAS
-#include "gpustats.hpp"
-#endif
+#ifndef AML_HPP
+#define AML_HPP
 
 #include <vector>
 
+#ifdef USE_OPENBLAS
+#include <cpu.hpp>
+#endif
+
+#ifdef USE_CUBLAS
+#include <gpu.hpp>
+#endif
+
+namespace aml {
 namespace structs {
 
 template <typename T> class Matrix {
@@ -47,5 +48,6 @@ private:
 };
 
 } // namespace structs
+} // namespace aml
 
 #endif
