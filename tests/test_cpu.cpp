@@ -1,6 +1,6 @@
-#include <statlib.hpp>
 #include <array>
 #include <gtest/gtest.h>
+#include <statlib.hpp>
 
 #ifdef USE_OPENBLAS
 

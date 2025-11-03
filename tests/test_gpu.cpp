@@ -1,5 +1,5 @@
-#include "include/statlib.hpp"
 #include <gtest/gtest.h>
+#include <statlib.hpp>
 
 #ifdef USE_CUBLAS
 
@@ -116,6 +116,32 @@ TEST(library, Gpu_Tensor_Max) {
   EXPECT_EQ(mathlib::gpu::tensor::max(b.data(), b.size()), 1.0f);
 }
 
+TEST(library, Gpu_Tensor_Normalize) {
+  std::array a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.f, 6.f};
+  std::array expected_a = {-1.5f, -1.0f, -0.5f, 0.0f, 0.5f, 1.0f, 1.5f};
+  float mean, std;
+
+  auto d_a = mathlib::gpu::memory::load(a.data(), a.size());
+  mathlib::gpu::tensor::normalize(d_a, &mean, &std, a.size());
+  mathlib::gpu::memory::offload(d_a, a.data(), a.size());
+
+  EXPECT_EQ(mean, 3.0f);
+  EXPECT_EQ(std, 2.0f);
+  EXPECT_EQ(a, expected_a);
+}
+
+TEST(library, Gpu_Tensor_Denormalize) {
+  std::array a = {-1.5f, -1.0f, -0.5f, 0.0f, 0.5f, 1.0f, 1.5f};
+  std::array expected_a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.f, 6.f};
+  float mean(3.0f), std(2.0f);
+
+  auto d_a = mathlib::gpu::memory::load(a.data(), a.size());
+  mathlib::gpu::tensor::denormalize(d_a, mean, std, a.size());
+  mathlib::gpu::memory::offload(d_a, a.data(), a.size());
+
+  EXPECT_EQ(a, expected_a);
+}
+
 TEST(library, Gpu_Linalg_Dot) {
   std::array a = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
   std::array b = {5.0f, 4.0f, 3.0f, 2.0f, 1.0f};
@@ -155,7 +181,7 @@ TEST(library, Gpu_Linalg_Matmul) {
 // TEST(library, Gpu_Nn_Relu) {
 //   std::array a = {-2.0f, -1.0f, 0.0f, 1.0f, 2.0f};
 //   std::array relu_a = {0.0f, 0.0f, 0.0f, 1.0f, 2.0f};
-  
+
 //   auto d_a=mathlib::gpu::memory::load(a.data(), a.size());
 
 //   mathlib::gpu::nn::relu(d_a,a.size());
