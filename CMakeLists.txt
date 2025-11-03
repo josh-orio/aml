@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28.0)
-project(statlib LANGUAGES CXX)
+project(aml LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB library_SOURCES "src/*.cpp")
@@ -8,20 +8,20 @@ file(GLOB library_INCLUDE "include/*.hpp")
 # message("library sources: ${library_SOURCES}")
 # message("library includes: ${library_INCLUDE}")
 
-add_library(statlib ${library_SOURCES})
-target_include_directories(statlib
+add_library(aml ${library_SOURCES})
+target_include_directories(aml
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-target_compile_options(statlib PRIVATE -Wall -Wextra -Wuninitialized -Wno-sign-compare)
+target_compile_options(aml PRIVATE -Wall -Wextra -Wuninitialized -Wno-sign-compare)
 
 # cuBLAS detection & linking to library
 find_package(CUDAToolkit)
 if (CUDAToolkit_FOUND)
     message(STATUS "Using cuBLAS from CUDA Toolkit")
-    target_compile_definitions(statlib PUBLIC USE_CUBLAS)
-    target_link_libraries(statlib PUBLIC CUDA::cublas CUDA::cudart)
+    target_compile_definitions(aml PUBLIC USE_CUBLAS)
+    target_link_libraries(aml PUBLIC CUDA::cublas CUDA::cudart)
 else()
     message(STATUS "CUDAToolkit not found. Building without cuBLAS.")
 endif()
@@ -30,13 +30,13 @@ endif()
 find_package(OpenBLAS)
 if (OpenBLAS_FOUND)
     message(STATUS "Using OpenBLAS")
-    target_compile_definitions(statlib PUBLIC USE_OPENBLAS)
-    target_link_libraries(statlib PUBLIC OpenBLAS::OpenBLAS)
+    target_compile_definitions(aml PUBLIC USE_OPENBLAS)
+    target_link_libraries(aml PUBLIC OpenBLAS::OpenBLAS)
 else()
     message(STATUS "OpenBLAS not found. Building without it.")
 endif()
 
-set_target_properties(statlib
+set_target_properties(aml
     PROPERTIES
     CMAKE_CXX_STANDARD 20
     CMAKE_CXX_STANDARD_REQUIRED ON
@@ -45,13 +45,13 @@ set_target_properties(statlib
 
 include(GNUInstallDirs)
 
-target_include_directories(statlib
+target_include_directories(aml
     PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-install(TARGETS statlib
+install(TARGETS aml
     EXPORT libraryTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -59,28 +59,28 @@ install(TARGETS statlib
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-install(FILES ${library_INCLUDE} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/statlib)
+install(FILES ${library_INCLUDE} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/aml)
 
 install(EXPORT libraryTargets
     FILE libraryTargets.cmake
-    NAMESPACE statlib::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/statlib
+    NAMESPACE aml::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aml
 )
 
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/statlibConfig.cmake"
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/statlib
+  "${CMAKE_CURRENT_BINARY_DIR}/amlConfig.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aml
 )
 
 install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/statlibConfig.cmake"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/statlib
+    "${CMAKE_CURRENT_BINARY_DIR}/amlConfig.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/aml
 )
 
 add_executable(example_program example.cpp)
-target_link_libraries(example_program PRIVATE statlib)
+target_link_libraries(example_program PRIVATE aml)
 target_compile_options(example_program PRIVATE -Wall -Wextra -Wuninitialized)
 
 enable_testing() # enabling ctest - 'make test'

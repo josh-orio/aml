@@ -1,25 +1,16 @@
-#ifndef GPUSTATS_HPP
-#define GPUSTATS_HPP
+#ifndef CPUMATH_HPP
+#define CPUMATH_HPP
 
+#include <algorithm>
+#include <cblas.h>
 #include <cstddef>
-#include <cublas_v2.h>
-#include <cuda_runtime.h>
-#include <cuda_runtime_api.h>
-#include <thrust/device_vector.h>
-#include <thrust/extrema.h>
-#include <thrust/transform.h>
+#include <random>
+#include <vector>
 
-namespace mathlib {
-namespace gpu {
+namespace aml {
+namespace cpu {
 
 namespace memory {
-
-template <typename T> void copy(const T *src, T *dst, size_t n);
-template <typename T> void swap(T *a, T *b, size_t n);
-
-template <typename T> T *load(const T *hostData, size_t count);                     // load: copy host data to GPU memory
-template <typename T> void offload(const T *deviceData, T *hostData, size_t count); // offload: copy gpu data back to host memory
-template <typename T> void clear(T *deviceData);                                    // clear: free gpu memory
 
 template <typename T> void copy(const T *src, T *dst, size_t n);
 template <typename T> void swap(T *a, T *b, size_t n);
@@ -38,7 +29,7 @@ template <typename T> T mean(const T *data, std::size_t n);
 template <typename T> T min(const T *data, size_t n);
 template <typename T> T max(const T *data, size_t n);
 
-template <typename T> void normalize(T *data, T *mean, T *std, size_t n);
+template <typename T> void normalize(T *data, T *mean, T *std, size_t n); // args because no structs
 template <typename T> void denormalize(T *data, T mean, T std, size_t n);
 
 } // namespace tensor
@@ -53,6 +44,9 @@ template <typename T> void matmul(const T *a, const T *b, T *c, size_t m, size_t
 namespace nn {
 
 template <typename T> void relu(T *data, size_t n);
+// void leaky_relu();
+// void tanh();
+// void sigmoid();
 
 } // namespace nn
 
@@ -71,7 +65,7 @@ template <typename T> void normal(T *data, size_t n, T mean, T stdev);
 
 } // namespace random
 
-} // namespace gpu
-} // namespace mathlib
+} // namespace cpu
+} // namespace aml
 
 #endif

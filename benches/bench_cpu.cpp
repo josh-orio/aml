@@ -1,7 +1,7 @@
 #ifdef USE_OPENBLAS
 
-#include <statlib.hpp>
 #include <algorithm>
+#include <aml.hpp>
 #include <benchmark/benchmark.h>
 #include <random>
 #include <vector>
@@ -10,7 +10,7 @@ static void BM_Cpu_Memory_Copy(benchmark::State &state) {
   structs::Matrix<float> A(state.range(0), 1, 1.0f), B(state.range(0), 1, 0.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::memory::copy(A.start(), B.start(), state.range(0));
+    aml::cpu::memory::copy(A.start(), B.start(), state.range(0));
     benchmark::ClobberMemory(); // ensure compiler doesn't optimize away
   }
 
@@ -23,7 +23,7 @@ static void BM_Cpu_Memory_Copy_Double(benchmark::State &state) {
   structs::Matrix<double> A(state.range(0), 1, 1.0f), B(state.range(0), 1, 0.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::memory::copy(A.start(), B.start(), state.range(0));
+    aml::cpu::memory::copy(A.start(), B.start(), state.range(0));
     benchmark::ClobberMemory();
   }
 
@@ -37,7 +37,7 @@ static void BM_Cpu_Memory_Swap(benchmark::State &state) {
   structs::Matrix<float> A(state.range(0), 1, 1.0f), B(state.range(0), 1, 0.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::memory::swap(A.start(), B.start(), state.range(0));
+    aml::cpu::memory::swap(A.start(), B.start(), state.range(0));
     benchmark::ClobberMemory();
   }
 
@@ -52,7 +52,7 @@ static void BM_Cpu_Tensor_Scale(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::scale(A.start(), 2.0f, n);
+    aml::cpu::tensor::scale(A.start(), 2.0f, n);
     benchmark::ClobberMemory();
   }
 
@@ -70,7 +70,7 @@ static void BM_Cpu_Tensor_Update(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f), B(n, 1, 0.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::update(A.start(), B.start(), 2.0f, n);
+    aml::cpu::tensor::update(A.start(), B.start(), 2.0f, n);
     benchmark::ClobberMemory();
   }
 
@@ -88,7 +88,7 @@ static void BM_Cpu_Tensor_Fixedupdate(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::fixed_update(A.start(), 2.0f, n);
+    aml::cpu::tensor::fixed_update(A.start(), 2.0f, n);
     benchmark::ClobberMemory();
   }
 
@@ -106,7 +106,7 @@ static void BM_Cpu_Tensor_Sum(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::sum(A.start(), n);
+    aml::cpu::tensor::sum(A.start(), n);
     benchmark::ClobberMemory();
   }
 
@@ -124,7 +124,7 @@ static void BM_Cpu_Tensor_Mean(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::mean(A.start(), n);
+    aml::cpu::tensor::mean(A.start(), n);
     benchmark::ClobberMemory();
   }
 
@@ -142,7 +142,7 @@ static void BM_Cpu_Tensor_Min(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::min(A.start(), n);
+    aml::cpu::tensor::min(A.start(), n);
     benchmark::ClobberMemory();
   }
 
@@ -157,7 +157,7 @@ static void BM_Cpu_Tensor_Max(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::tensor::max(A.start(), n);
+    aml::cpu::tensor::max(A.start(), n);
     benchmark::ClobberMemory();
   }
 
@@ -172,7 +172,7 @@ static void BM_Cpu_Tensor_Dot(benchmark::State &state) {
   structs::Matrix<float> A(n, 1, 1.0f), B(n, 1, 0.0f);
 
   for (auto _ : state) {
-    mathlib::cpu::linalg::dot(A.start(), B.start(), n);
+    aml::cpu::linalg::dot(A.start(), B.start(), n);
     benchmark::ClobberMemory();
   }
 
@@ -193,11 +193,11 @@ static void BM_Cpu_Linalg_Matmul(benchmark::State &state) {
   structs::Matrix<float> A(M, K), B(K, N), C(M, N);
 
   // fill matrices with rand
-  mathlib::cpu::random::uniform(A.start(), M * K, 0.f, 1.f);
-  mathlib::cpu::random::uniform(B.start(), K * N, 0.f, 1.f);
+  aml::cpu::random::uniform(A.start(), M * K, 0.f, 1.f);
+  aml::cpu::random::uniform(B.start(), K * N, 0.f, 1.f);
 
   for (auto _ : state) {
-    mathlib::cpu::linalg::matmul(A.start(), B.start(), C.start(), M, N, K);
+    aml::cpu::linalg::matmul(A.start(), B.start(), C.start(), M, N, K);
   }
 
   double gflops = 2.0 * M * N * K / 1e9; // 2mnk

@@ -1,8 +1,8 @@
 #ifdef USE_CUBLAS
 
-#include "gpustats.hpp"
+#include <gpu.hpp>
 
-namespace mathlib {
+namespace aml {
 namespace gpu {
 
 namespace memory {
@@ -391,6 +391,6 @@ template double covariance(const double *a, const double *b, size_t n, bool samp
 namespace random {}
 
 } // namespace gpu
-} // namespace mathlib
+} // namespace aml
 
 #endif

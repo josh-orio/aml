@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(test_all test_cpu.cpp test_gpu.cpp)
 target_link_libraries(test_all
   PRIVATE
-    statlib
+    aml
     GTest::gtest_main
 )
 
