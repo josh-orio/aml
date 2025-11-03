@@ -28,6 +28,9 @@ template <typename T> T mean(const T *data, std::size_t n);
 template <typename T> T min(const T *data, size_t n);
 template <typename T> T max(const T *data, size_t n);
 
+template <typename T> void normalize(T *data, T *mean, T *std, size_t n); // args because no structs
+template <typename T> void denormalize(T *data, T mean, T std, size_t n);
+
 } // namespace tensor
 
 namespace linalg {

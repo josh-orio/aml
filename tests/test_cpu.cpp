@@ -1,4 +1,4 @@
-#include "include/statlib.hpp"
+#include <statlib.hpp>
 #include <array>
 #include <gtest/gtest.h>
 
@@ -90,6 +90,28 @@ TEST(library, Cpu_Tensor_Max) {
 
   EXPECT_EQ(mathlib::cpu::tensor::max(a.data(), a.size()), 4.0f);
   EXPECT_EQ(mathlib::cpu::tensor::max(b.data(), b.size()), 1.0f);
+}
+
+TEST(library, Cpu_Tensor_Normalize) {
+  std::array a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.f, 6.f};
+  std::array expected_a = {-1.5f, -1.0f, -0.5f, 0.0f, 0.5f, 1.0f, 1.5f};
+  float mean, std;
+
+  mathlib::cpu::tensor::normalize(a.data(), &mean, &std, a.size());
+
+  EXPECT_EQ(mean, 3.0f);
+  EXPECT_EQ(std, 2.0f);
+  EXPECT_EQ(a, expected_a);
+}
+
+TEST(library, Cpu_Tensor_Denormalize) {
+  std::array a = {-1.5f, -1.0f, -0.5f, 0.0f, 0.5f, 1.0f, 1.5f};
+  std::array expected_a = {0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.f, 6.f};
+  float mean(3.0f), std(2.0f);
+
+  mathlib::cpu::tensor::denormalize(a.data(), mean, std, a.size());
+
+  EXPECT_EQ(a, expected_a);
 }
 
 TEST(library, Cpu_Linalg_Dot) {
