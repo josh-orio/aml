@@ -1,6 +1,6 @@
 #ifdef USE_OPENBLAS
 
-#include "include/statlib.hpp"
+#include <statlib.hpp>
 #include <algorithm>
 #include <benchmark/benchmark.h>
 #include <random>
@@ -214,6 +214,7 @@ BENCHMARK(BM_Cpu_Linalg_Matmul)
 // stdev
 // variance
 // covar
+// norm/denorm (gbps and gflop)
 
 BENCHMARK_MAIN();
 

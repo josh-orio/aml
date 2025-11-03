@@ -236,6 +236,26 @@ template <typename T> T max(const T *data, size_t n) {
 template float max(const float *, std::size_t);
 template double max(const double *, std::size_t);
 
+template <typename T> void normalize(T *data, T *mean, T *std, size_t n) {
+  *mean = tensor::mean(data, n);
+  *std = stats::std_deviation(data, n); // mean and std are kept on the CPU (not sure if thats smart)
+  // maybe these shouldnt be in host mem, if you want to reuse them in other functions they may incur pcie transfer penalty
+
+  fixed_update(data, static_cast<T>(-1) * (*mean), n); // X = X - mean
+  scale(data, static_cast<T>(1) / (*std), n);          // Z = X / std
+}
+
+template void normalize(float *, float *, float *, size_t);
+template void normalize(double *, double *, double *, size_t);
+
+template <typename T> void denormalize(T *data, T mean, T std, size_t n) {
+  scale(data, std, n);         // X = Z * std
+  fixed_update(data, mean, n); // X = X + mean
+}
+
+template void denormalize(float *, float, float, size_t);
+template void denormalize(double *, double, double, size_t);
+
 } // namespace tensor
 
 namespace linalg {
