@@ -20,7 +20,6 @@ if (CUDAToolkit_FOUND)
 
     set(CMAKE_CUDA_STANDARD 20)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-    set(CMAKE_CUDA_ARCHITECTURES native)
 
     message(STATUS "Using cuBLAS from CUDA Toolkit")
     target_compile_definitions(aml PUBLIC USE_CUBLAS)
