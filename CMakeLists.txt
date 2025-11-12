@@ -2,11 +2,8 @@ cmake_minimum_required(VERSION 3.28.0)
 project(aml LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
-file(GLOB library_SOURCES "src/*.cpp")
+file(GLOB library_SOURCES "src/*.c*")
 file(GLOB library_INCLUDE "include/*.hpp")
-
-# message("library sources: ${library_SOURCES}")
-# message("library includes: ${library_INCLUDE}")
 
 add_library(aml ${library_SOURCES})
 target_include_directories(aml
@@ -19,9 +16,21 @@ target_compile_options(aml PRIVATE -Wall -Wextra -Wuninitialized -Wno-sign-compa
 # cuBLAS detection & linking to library
 find_package(CUDAToolkit)
 if (CUDAToolkit_FOUND)
+   enable_language(CUDA)
+
+    set(CMAKE_CUDA_STANDARD 20)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+    set(CMAKE_CUDA_ARCHITECTURES native)
+
     message(STATUS "Using cuBLAS from CUDA Toolkit")
     target_compile_definitions(aml PUBLIC USE_CUBLAS)
     target_link_libraries(aml PUBLIC CUDA::cublas CUDA::cudart)
+
+    target_compile_options(aml PRIVATE  # enables device lambdas
+        $<$<COMPILE_LANGUAGE:CUDA>:--extended-lambda>
+        $<$<COMPILE_LANGUAGE:CUDA>:--expt-relaxed-constexpr>
+    )
+
 else()
     message(STATUS "CUDAToolkit not found. Building without cuBLAS.")
 endif()
