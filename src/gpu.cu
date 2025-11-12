@@ -315,15 +315,17 @@ template void matmul(const double *, const double *, double *, size_t, size_t, s
 
 namespace nn {
 
-// template <typename T>
-// void relu(T* data, size_t n) {
-//     if (n == 0) return;
-//     thrust::transform(data, data + n, data,
-//                       [] __host__ __device__ (T x) { return x > T(0) ? x : T(0); });
-// }
+template <typename T> void relu(T *data, size_t n) {
+  if (n == 0)
+    return;
 
-// template void relu(float *, size_t );
-// template void relu(double *, size_t );
+  thrust::device_ptr<T> dev_ptr = thrust::device_pointer_cast(data);
+
+  thrust::transform(thrust::device, dev_ptr, dev_ptr + n, dev_ptr, [] __device__(T x) { return x > T(0) ? x : T(0); });
+}
+
+template void relu(float *, size_t);
+template void relu(double *, size_t);
 
 } // namespace nn
 

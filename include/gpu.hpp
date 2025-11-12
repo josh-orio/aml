@@ -8,6 +8,10 @@
 #include <thrust/device_vector.h>
 #include <thrust/extrema.h>
 #include <thrust/transform.h>
+#include <thrust/device_ptr.h>
+#include <thrust/transform.h>
+#include <thrust/functional.h>
+#include <thrust/execution_policy.h>
 
 namespace aml {
 namespace gpu {

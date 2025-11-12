@@ -178,18 +178,18 @@ TEST(library, Gpu_Linalg_Matmul) {
   EXPECT_EQ(c, expected_c);
 }
 
-// TEST(library, Gpu_Nn_Relu) {
-//   std::array a = {-2.0f, -1.0f, 0.0f, 1.0f, 2.0f};
-//   std::array relu_a = {0.0f, 0.0f, 0.0f, 1.0f, 2.0f};
+TEST(library, Gpu_Nn_Relu) {
+  std::array a = {-2.0f, -1.0f, 0.0f, 1.0f, 2.0f};
+  std::array relu_a = {0.0f, 0.0f, 0.0f, 1.0f, 2.0f};
 
-//   auto d_a=aml::gpu::memory::load(a.data(), a.size());
+  auto d_a = aml::gpu::memory::load(a.data(), a.size());
 
-//   aml::gpu::nn::relu(d_a,a.size());
+  aml::gpu::nn::relu(d_a, a.size());
 
-//   aml::gpu::memory::offload(d_a, a.data(), a.size());
+  aml::gpu::memory::offload(d_a, a.data(), a.size());
 
-//   EXPECT_EQ(a, relu_a);
-// }
+  EXPECT_EQ(a, relu_a);
+}
 
 TEST(library, Gpu_Stats_Stddeviation) {
   std::array a = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f};
