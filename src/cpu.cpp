@@ -1,6 +1,6 @@
 #ifdef USE_OPENBLAS
 
-#include <cpu.hpp>
+#include <aml/cpu.hpp>
 
 namespace aml {
 namespace cpu {

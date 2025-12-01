@@ -1,7 +1,7 @@
 #ifdef USE_CUBLAS
 
 #include <algorithm>
-#include <aml.hpp>
+#include <aml/aml.hpp>
 #include <benchmark/benchmark.h>
 #include <random>
 #include <vector>

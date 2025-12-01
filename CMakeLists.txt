@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.28.0)
 project(aml LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
-file(GLOB library_SOURCES "src/*.c*")
-file(GLOB library_INCLUDE "include/*.hpp")
+file(GLOB_RECURSE library_SOURCES "src/*.c*")
+file(GLOB_RECURSE library_INCLUDE "include/*.hpp")
 
 add_library(aml ${library_SOURCES})
 target_include_directories(aml

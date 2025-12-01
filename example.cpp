@@ -1,4 +1,4 @@
-#include <aml.hpp>
+#include <aml/aml.hpp>
 #include <array>
 #include <iostream>
 #include <random>
