@@ -1,4 +1,4 @@
-#include <aml.hpp>
+#include <aml/aml.hpp>
 #include <gtest/gtest.h>
 
 #ifdef USE_CUBLAS

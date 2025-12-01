@@ -62,6 +62,7 @@ namespace random {
 
 template <typename T> void uniform(T *data, size_t n, T lower, T upper);
 template <typename T> void normal(T *data, size_t n, T mean, T stdev);
+template <typename T> void skew_normal(T *data, size_t n, T loc, T scale, T shape);
 
 } // namespace random
 

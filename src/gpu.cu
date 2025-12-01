@@ -1,6 +1,6 @@
 #ifdef USE_CUBLAS
 
-#include <gpu.hpp>
+#include <aml/gpu.hpp>
 
 namespace aml {
 namespace gpu {

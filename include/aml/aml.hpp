@@ -4,11 +4,11 @@
 #include <vector>
 
 #ifdef USE_OPENBLAS
-#include <cpu.hpp>
+#include <aml/cpu.hpp>
 #endif
 
 #ifdef USE_CUBLAS
-#include <gpu.hpp>
+#include <aml/gpu.hpp>
 #endif
 
 namespace aml {
